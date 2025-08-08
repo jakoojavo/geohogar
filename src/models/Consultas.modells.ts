@@ -5,7 +5,7 @@ import { Estadoconsulta } from "./Estadoconsulta.models";
 
 @Table({
   tableName: "consulta",
-  timestamps: false
+  timestamps: true
 })
 class Consulta extends Model {
   @PrimaryKey
@@ -14,6 +14,23 @@ class Consulta extends Model {
     type: DataType.INTEGER,
   })
   ID_consulta!: number;
+
+  @Column({
+    type: DataType.STRING(45),
+  })
+  nombre!: string;
+  @Column({
+    type: DataType.STRING(45),
+  })
+  email!: string;
+  @Column({
+    type: DataType.STRING(125),
+  })
+  Mensaje!:string;
+  @Column({
+    type: DataType.STRING(45),
+  })
+  telefono!:String
 
 
   
