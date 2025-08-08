@@ -1,9 +1,10 @@
-import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey } from "sequelize-typescript";
+import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, HasMany } from "sequelize-typescript";
+import { Propiedades } from "./Propiedades.models";
 
 
 @Table({
     tableName:"agenteinmobiliario",
-    timestamps: false
+    timestamps: true
 })
 
 class Agenteinmobiliario extends Model{
@@ -49,6 +50,9 @@ class Agenteinmobiliario extends Model{
         type: DataType.STRING(45)
     })
     observaciones!:string
+
+    @HasMany(() => Propiedades)
+    propiedades!: Propiedades[];
 }
 
 export default Agenteinmobiliario
