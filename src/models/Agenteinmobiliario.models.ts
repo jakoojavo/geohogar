@@ -3,7 +3,7 @@ import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey } from "s
 
 @Table({
     tableName:"agenteinmobiliario",
-    timestamps: false
+    timestamps: true
 })
 
 class Agenteinmobiliario extends Model{
