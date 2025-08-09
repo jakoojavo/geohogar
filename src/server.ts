@@ -1,12 +1,23 @@
 import express from "express";
 import db from "./config/db";
 import  routerAgente  from "./router/agenteInmobiliario.router";
+import routerEstadoconsulta from "./router/estadoconsulta.router";
+import routerConsulta from "./router/consulta.router";
+import routerImagen from "./router/imagen.router";
+import routerOperacion from "./router/operacion.router";
+import routerPiezas from "./router/piezas.router";
 
 const server = express();
 server.use(express.json());
 
 
 server.use("/api",routerAgente);
+server.use("/api",routerEstadoconsulta);
+server.use("/api",routerConsulta);
+server.use("/api",routerEstadoconsulta);
+server.use("/api",routerImagen);
+server.use("/api",routerOperacion);
+server.use("/api",routerPiezas);
 
 // async function connectDB() {
 //    try {
