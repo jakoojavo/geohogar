@@ -1,5 +1,12 @@
 import express from "express";
 import db from "./config/db";
+import  routerAgente  from "./router/agenteinmobiliario";
+
+const server = express();
+server.use(express.json());
+
+
+server.use("/api",routerAgente);
 
 
 
@@ -15,6 +22,6 @@ async function conectDB() {
 }
 conectDB()
 
-const server = express();
+
 
 export default server
