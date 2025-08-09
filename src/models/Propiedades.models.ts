@@ -1,12 +1,12 @@
 import { Table, Column, Model, AutoIncrement, DataType, Default, PrimaryKey, BelongsTo, HasMany, ForeignKey } from "sequelize-typescript";
-import { Imagen } from "./Imagen.models";
-import { Agenteinmobiliario } from "./Agenteinmobiliario.models";
-import { Estadopropiedad } from "./Estadopropiedad.models";
-import { Piezas } from "./Piezas.models";
-import { Tipoinmueble } from "./Tipoinmueble.models";
-import { Zona } from "./Zona.models";
-import {Operacion } from "./Operaciones.models";
-import { Consulta } from "./Consultas.models";
+import  Imagen  from "./Imagen.models";
+import  Agenteinmobiliario  from "./Agenteinmobiliario.models";
+import  Estadopropiedad  from "./Estadopropiedad.models";
+import  Piezas  from "./Piezas.models";
+import  Tipoinmueble  from "./Tipoinmueble.models";
+import  Zona  from "./Zona.models";
+import Operacion  from "./Operaciones.models";
+import Consulta from "./Consultas.models";
 
 
 @Table({

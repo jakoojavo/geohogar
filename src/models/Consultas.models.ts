@@ -1,7 +1,6 @@
-// src/models/Consulta.ts
 import { Table, Column, Model, AutoIncrement, DataType, PrimaryKey, BelongsTo, ForeignKey } from "sequelize-typescript";
-import { Propiedades } from "./Propiedades.models";
-import { Estadoconsulta } from "./Estadoconsulta.models";
+import  Propiedades  from "./Propiedades.models";
+import  Estadoconsulta  from "./Estadoconsulta.models";
 
 @Table({
   tableName: "consulta",
