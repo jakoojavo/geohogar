@@ -35,9 +35,11 @@ class Agenteinmobiliario extends Model{
      })
      dni!:string;
     @Column({
-        type: DataType.STRING(45)
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     })
-    estado!:string;
+    estado!:boolean;
     @Column({
         type: DataType.STRING(45)
     })
