@@ -1,5 +1,5 @@
 import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, HasMany } from "sequelize-typescript";
-import { Propiedades } from "./Propiedades.models";
+import Consulta from "./Consultas.models";
 
 
 @Table({
@@ -19,8 +19,8 @@ class Estadoconsulta extends Model{
     })
     nombre!:string;
 
-    @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    @HasMany(() => Consulta)
+    consultas!: Consulta[];
 }
 
 export default Estadoconsulta

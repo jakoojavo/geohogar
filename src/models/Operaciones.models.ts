@@ -1,13 +1,12 @@
-// src/models/Operacion.ts
 import { Table, Column, Model, AutoIncrement, DataType, PrimaryKey, BelongsTo, ForeignKey } from "sequelize-typescript";
-import { Propiedades } from "./Propiedades.models";
+import  Propiedades  from "./Propiedades.models";
 
 
 @Table({
   tableName: "operacion",
   timestamps: false
 })
-export class Operacion extends Model {
+class Operacion extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column({
@@ -30,11 +29,6 @@ export class Operacion extends Model {
   fechafin!: Date;
 
 
-
-
-
-
- 
   @ForeignKey(() => Propiedades)
   @Column({
     type: DataType.INTEGER,
@@ -43,8 +37,5 @@ export class Operacion extends Model {
 
   @BelongsTo(() => Propiedades)
   propiedad!: Propiedades;
-
-  
-
-  
 }
+export default Operacion;

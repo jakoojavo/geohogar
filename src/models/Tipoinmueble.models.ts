@@ -1,5 +1,5 @@
 import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, HasMany } from "sequelize-typescript";
-import { Propiedades } from "./Propiedades.models";
+import  Propiedades  from "./Propiedades.models";
 
 @Table({
     tableName:"tipoinmueble",
