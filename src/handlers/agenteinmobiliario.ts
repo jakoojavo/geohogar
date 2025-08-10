@@ -13,14 +13,7 @@ const subirAgente  = async ( req:Request, res: Response ) =>{
 
 const obtenerListaAgente = async (req: Request, res: Response) => {
     try {
-      const agente = await Agenteinmobiliario.findAll({
-        include: [
-          {
-            model: Agenteinmobiliario,
-            attributes: ['description'], 
-          },
-        ],
-      });
+      const agente = await Agenteinmobiliario.findAll()
       res.json({ data: agente });
     } catch (error) {
       console.error(error);
@@ -32,11 +25,11 @@ const obtenerListaAgente = async (req: Request, res: Response) => {
   const obtenerAgentePorId = async (req: Request, res: Response) =>{
     try{
     const{id}=req.params
-    const status = await Agenteinmobiliario.findByPk (id)
-    if(!status) {
-    return res.status(404).json('status no existe')
+    const agente = await Agenteinmobiliario.findByPk (id)
+    if(!agente) {
+    return res.status(404).json('agente no existe')
     }
-    res.json({data: status})
+    res.json({data: agente})
     }catch(error) {
     console.log(error)
     }
