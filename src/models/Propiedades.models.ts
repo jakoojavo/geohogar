@@ -41,9 +41,9 @@ class Propiedades extends Model {
         type: DataType.INTEGER,
     })
     @ForeignKey(() => Zona)
-  @Column({
+    @Column({
     type: DataType.INTEGER,
-  })
+    })
   ID_zona!: number;
 
   @BelongsTo(() => Zona)
