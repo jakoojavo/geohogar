@@ -23,7 +23,7 @@ server.use("/api",routerOperacion);
 server.use("/api",routerPiezas);
 server.use("/api", routerPropiedades);
 server.use("/api", routerTipoinmueble);
-server.use("/api", routerZona)
+server.use("/api",routerZona)
 
 
 // async function connectDB() {
