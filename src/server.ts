@@ -9,6 +9,7 @@ import routerPiezas from "./router/piezas.router";
 import routerPropiedades from "./router/propiedades.router";
 import routerTipoinmueble from "./router/tipoinmueble.router";
 import routerZona from "./router/zona.router";
+import routerEstadopropiedad from "./router/estadopropiead.router";
 
 const server = express();
 server.use(express.json());
@@ -45,7 +46,7 @@ conectDB()
 server.use("/api",routerAgente)
 server.use("/api",routerEstadoconsulta)
 server.use("/api",routerConsulta)
-server.use("/api",routerEstadoconsulta)
+server.use("/api",routerEstadopropiedad)
 server.use("/api",routerImagen)
 server.use("/api",routerOperacion)
 server.use("/api",routerPiezas)

@@ -13,7 +13,7 @@ class Agenteinmobiliario extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_piezas!:number;
+    ID_agente!:number;
     @Column({
         type: DataType.STRING(45),
     })
