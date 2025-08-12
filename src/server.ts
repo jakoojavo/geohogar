@@ -28,7 +28,8 @@ server.use(express.json());
 //        console.error("Error al conectar o sincronizar la base de datos:", error);
 //      }
 //    }
-//   connectDB()
+//   connectDB()   
+// este lo que hace es dropear las tablas y volver a crearlas, es útil para desarrollo pero no en producción
 
 
 async function conectDB() {
