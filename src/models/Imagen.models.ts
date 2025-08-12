@@ -14,7 +14,7 @@ class Imagen extends Model{
     })
     ID_imagen!:number;
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(245),
     })
     nombre!:string;
 
