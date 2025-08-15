@@ -1,9 +1,9 @@
 import { Request,Response } from "express";
-import Piezas from "../models/Piezas.models";
+import Ambientes from "../models/Ambientes.models";
 
-const subirPiezas  = async ( req:Request, res: Response ) =>{
+const subirAmbientes  = async ( req:Request, res: Response ) =>{
     try{
-        const consulta=await Piezas.create(req.body)
+        const consulta=await Ambientes.create(req.body)
         res.json({data:consulta})
     } catch(error){
         console.error('Error al crear consulta:', error);
@@ -11,9 +11,9 @@ const subirPiezas  = async ( req:Request, res: Response ) =>{
     }
 }
 
-const obtenerListaPiezas = async (req: Request, res: Response) => {
+const obtenerListaAmbientes = async (req: Request, res: Response) => {
     try {
-      const consulta = await Piezas.findAll()
+      const consulta = await Ambientes.findAll()
       res.json({ data: consulta });
     } catch (error) {
       console.error(error);
@@ -22,10 +22,10 @@ const obtenerListaPiezas = async (req: Request, res: Response) => {
   };
 
 
-  const obtenerPiezasPorId = async (req: Request, res: Response) =>{
+  const obtenerAmbientesPorId = async (req: Request, res: Response) =>{
     try{
     const{id}=req.params
-    const consulta = await Piezas.findByPk (id)
+    const consulta = await Ambientes.findByPk (id)
     if(!consulta) {
     return res.status(404).json('consulta no existe')
     }
@@ -35,6 +35,6 @@ const obtenerListaPiezas = async (req: Request, res: Response) => {
     }
 }
 
-export { subirPiezas,
-     obtenerPiezasPorId,
-     obtenerListaPiezas };
+export { subirAmbientes,
+     obtenerAmbientesPorId,
+     obtenerListaAmbientes };

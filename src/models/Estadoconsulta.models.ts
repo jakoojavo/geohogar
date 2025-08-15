@@ -17,7 +17,13 @@ class Estadoconsulta extends Model{
     @Column({
         type: DataType.STRING(45),
     })
-    nombre!:string;
+    estado_consulta!:string;
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
 
     @HasMany(() => Consulta)
     consultas!: Consulta[];

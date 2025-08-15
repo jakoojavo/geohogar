@@ -19,14 +19,20 @@ class Operacion extends Model {
   })
   tipo!: string;
   @Column({
-    type: DataType.DATE
+    type: DataType.DATEONLY
   })
   fechainicio!: Date;
 
   @Column({
-    type: DataType.DATE
+    type: DataType.DATEONLY
   })
   fechafin!: Date;
+  @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
 
 
   @ForeignKey(() => Propiedades)

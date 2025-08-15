@@ -1,51 +1,59 @@
 import { Table, Column, Model, AutoIncrement, DataType, Default, PrimaryKey, BelongsTo, HasMany, ForeignKey } from "sequelize-typescript";
-import  Imagen  from "./Imagen.models";
-import  Agenteinmobiliario  from "./Agenteinmobiliario.models";
-import  Estadopropiedad  from "./Estadopropiedad.models";
-import  Piezas  from "./Piezas.models";
-import  Tipoinmueble  from "./Tipoinmueble.models";
-import  Zona  from "./Zona.models";
-import Operacion  from "./Operaciones.models";
+import Imagen from "./Imagen.models";
+import Agenteinmobiliario from "./Agenteinmobiliario.models";
+import Estadopropiedad from "./Estadopropiedad.models";
+import Tipoinmueble from "./Tipoinmueble.models";
+import Zona from "./Zona.models";
+import Operacion from "./Operaciones.models";
 import Consulta from "./Consultas.models";
+import Ambientes from "./Ambientes.models";
 
 
 @Table({
-    tableName: "propiedades",
-    timestamps: false
+  tableName: "propiedades",
+  timestamps: false
 })
 
 class Propiedades extends Model {
-    @PrimaryKey
-    @AutoIncrement
-    @Column({
-        type: DataType.INTEGER,
-    })
-    ID_propiedades!: number;
-    @Column({
-        type: DataType.STRING(45),
-    })
-    direccion!: string;
-    @Column({
-        type: DataType.DECIMAL(10, 5)
-    })
-    precio!: number;
-    @Column({
-        type: DataType.STRING(125)
-    })
-    descripcion!: string;
-    @Column({
-        type: DataType.STRING(125)
-    })
-    geolocalizacion!: string;
-    @Column({
-        type: DataType.INTEGER,
-    })
-    @ForeignKey(() => Zona)
-    @Column({
+  @PrimaryKey
+  @AutoIncrement
+  @Column({
     type: DataType.INTEGER,
-    })
-  ID_zona!: number;
+  })
+  ID_propiedades!: number;
 
+  @Column({
+    type: DataType.STRING(255),
+  })
+  direccion!: string;
+
+  @Column({
+    type: DataType.DECIMAL(5,25)
+  })
+  precio!: number;
+
+  @Column({
+    type: DataType.STRING(225)
+  })
+  descripcion!: string;
+
+  @Column({
+    type: DataType.STRING(125)
+  })
+  geolocalizacion!: string;
+
+  @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
+
+  @ForeignKey(() => Zona)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  ID_zona!: number;
   @BelongsTo(() => Zona)
   zona!: Zona;
 
@@ -75,24 +83,20 @@ class Propiedades extends Model {
 
   @BelongsTo(() => Estadopropiedad)
   estadopropiedad!: Estadopropiedad;
-  
-  @ForeignKey(() => Piezas)
+
+
+
+  @ForeignKey(() => Ambientes)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_piezas!: number;
+  ID_ambiente!: number;
 
-  @BelongsTo(() => Piezas)
-  piezas!: Piezas;
+  @BelongsTo(() => Ambientes)
+  ambientes!: Ambientes;
 
-  @ForeignKey(() => Imagen)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  ID_imagen!: number;
-
-  @BelongsTo(() => Imagen)
-  imagen!: Imagen;
+  @HasMany(() => Imagen)
+  imagenes!: Imagen[];
 
 
   @HasMany(() => Operacion)

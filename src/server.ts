@@ -5,11 +5,11 @@ import routerEstadoconsulta from "./router/estadoconsulta.router";
 import routerConsulta from "./router/consulta.router";
 import routerImagen from "./router/imagen.router";
 import routerOperacion from "./router/operacion.router";
-import routerPiezas from "./router/piezas.router";
 import routerPropiedades from "./router/propiedades.router";
 import routerTipoinmueble from "./router/tipoinmueble.router";
 import routerZona from "./router/zona.router";
 import routerEstadopropiedad from "./router/estadopropiead.router";
+import routerAmbientes from "./router/ambientes.router";
 
 const server = express();
 server.use(express.json());
@@ -29,7 +29,7 @@ server.use(express.json());
 //      }
 //    }
 //   connectDB()   
-// este lo que hace es dropear las tablas y volver a crearlas, es útil para desarrollo pero no en producción
+//este lo que hace es dropear las tablas y volver a crearlas, es útil para desarrollo pero no en producción
 
 
 async function conectDB() {
@@ -50,10 +50,10 @@ server.use("/api",routerConsulta)
 server.use("/api",routerEstadopropiedad)
 server.use("/api",routerImagen)
 server.use("/api",routerOperacion)
-server.use("/api",routerPiezas)
 server.use("/api", routerPropiedades)
 server.use("/api", routerTipoinmueble)
 server.use("/api",routerZona)
+server.use("/api", routerAmbientes);
 
 
 

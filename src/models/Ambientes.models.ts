@@ -1,26 +1,32 @@
 import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, HasMany } from "sequelize-typescript";
 import  Propiedades  from "./Propiedades.models";
 
-
 @Table({
-    tableName:"piezas",
+    tableName:"ambientes",
     timestamps: false
 })
 
-class Piezas extends Model{
+class Ambientes extends Model{
     @PrimaryKey
     @AutoIncrement
     @Column({
         type: DataType.INTEGER,
     })
-    ID_piezas!:number;
+    ID_ambiente!:number;
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(145),
     })
-    nombre!:string;
+    ambientes!:string;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;    
 
     @HasMany(() => Propiedades)
     propiedades!: Propiedades[];
 }
 
-export default Piezas
+export default Ambientes

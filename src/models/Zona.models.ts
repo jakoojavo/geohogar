@@ -14,9 +14,16 @@ class Zona extends Model{
     })
     ID_zona!:number;
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(145),
     })
-    nombre!:string;
+    zona!:string;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
 
     @HasMany(() => Propiedades)
     propiedades!: Propiedades[];
