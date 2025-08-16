@@ -15,9 +15,9 @@ class Consulta extends Model {
   ID_consulta!: number;
 
   @Column({
-    type: DataType.STRING(45),
+    type: DataType.STRING(145),
   })
-  nombre!: string;
+  nombre_cliente!: string;
   @Column({
     type: DataType.STRING(45),
   })
@@ -30,8 +30,12 @@ class Consulta extends Model {
     type: DataType.STRING(45),
   })
   telefono!:String
-
-
+  @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
   
   @ForeignKey(() => Propiedades)
   @Column({
@@ -49,6 +53,6 @@ class Consulta extends Model {
   ID_estadoconsulta!: number;
 
   @BelongsTo(() => Estadoconsulta)
-  estadoconsulta!: Estadoconsulta;
+  estado_consulta!: Estadoconsulta;
 }
 export default Consulta;

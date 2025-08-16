@@ -16,7 +16,14 @@ class Tipoinmueble extends Model{
     @Column({
         type: DataType.STRING(45),
     })
-    nombre!:string;
+    inmueble!:string;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
 
     @HasMany(() => Propiedades)
     propiedades!: Propiedades[];

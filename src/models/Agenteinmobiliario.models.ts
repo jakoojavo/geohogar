@@ -15,11 +15,11 @@ class Agenteinmobiliario extends Model{
     })
     ID_agente!:number;
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(145),
     })
     nombre!:string;
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(145),
     })
     email!:string;
     @Column({
@@ -41,7 +41,7 @@ class Agenteinmobiliario extends Model{
     })
     estado!:boolean;
     @Column({
-        type: DataType.STRING(45)
+        type: DataType.STRING(255)
     })
     clave!:string;
     @Column({
@@ -49,9 +49,16 @@ class Agenteinmobiliario extends Model{
     })
     matricula!:string;
     @Column({
-        type: DataType.STRING(45)
+        type: DataType.STRING(145)
     })
     observaciones!:string
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    })
+    esadmin!:boolean;
 
     @HasMany(() => Propiedades)
     propiedades!: Propiedades[];

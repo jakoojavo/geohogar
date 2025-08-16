@@ -1,4 +1,4 @@
-import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, HasMany } from "sequelize-typescript";
+import { Table,Column,Model,AutoIncrement,DataType,Default, PrimaryKey, BelongsTo ,ForeignKey, HasMany } from "sequelize-typescript";
 import  Propiedades  from "./Propiedades.models";
 
 @Table({
@@ -14,12 +14,27 @@ class Imagen extends Model{
     })
     ID_imagen!:number;
     @Column({
-        type: DataType.STRING(245),
+        type: DataType.STRING(255),
     })
-    nombre!:string;
+    URL!:string;
+    
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    })
+    estado!:boolean;
 
-    @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    @ForeignKey(() => Propiedades)
+    @Column({
+    type: DataType.INTEGER,
+    })
+    ID_propiedad!: number;
+
+    @BelongsTo(() => Propiedades)
+    propiedad!: Propiedades;
+
+    
 }
 
 export default Imagen
