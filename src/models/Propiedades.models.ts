@@ -28,7 +28,7 @@ class Propiedades extends Model {
   direccion!: string;
 
   @Column({
-    type: DataType.DECIMAL(5,25)
+    type: DataType.DECIMAL(12,2)
   })
   precio!: number;
 
