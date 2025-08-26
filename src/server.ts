@@ -39,7 +39,7 @@ async function conectDB() {
         console.log('La base de datos se conecto correctamente')
     } catch (error) {
         console.log(error)
-        console.log('error de conexion a la Base de Datos')
+        console.log('error de conexion a la Base de Datos121212')
     }
 }
 conectDB()
