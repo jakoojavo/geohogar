@@ -12,11 +12,11 @@ class Imagen extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_imagen!:number;
+    ID_imagen:number;
     @Column({
         type: DataType.STRING(255),
     })
-    URL!:string;
+    URL:string;
     
     @Column({
         type: DataType.BOOLEAN,

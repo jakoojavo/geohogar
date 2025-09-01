@@ -41,6 +41,14 @@ class Propiedades extends Model {
     type: DataType.STRING(125)
   })
   geolocalizacion!: string;
+  @Column({
+    type: DataType.STRING(125)
+  })
+  latitud!: string;
+  @Column({
+    type: DataType.STRING(125)
+  })
+  longitud!: string;
 
   @Column({
         type: DataType.BOOLEAN,
