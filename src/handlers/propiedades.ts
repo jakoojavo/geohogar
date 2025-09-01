@@ -12,7 +12,7 @@ import Imagen from "../models/Imagen.models";
 const subirPropiedades = async (req: Request, res: Response) => {
   try {
     const {
-      direccion, precio, descripcion, geolocalizacion,
+      direccion, precio, descripcion, geolocalizacion,latitud,longitud,
       estado, ID_zona, ID_agente, ID_tipoinmueble,
       ID_estadopropiedad, ID_ambiente
     } = req.body;
@@ -27,6 +27,8 @@ const subirPropiedades = async (req: Request, res: Response) => {
         precio,
         descripcion,
         geolocalizacion,
+        latitud,
+        longitud,
         estado: estado === 'true' || estado === true,
         ID_zona: parseOrNull(ID_zona),
         ID_agente: parseOrNull(ID_agente),
