@@ -20,10 +20,15 @@ class Agenteinmobiliario extends Model{
     nombre!:string;
     @Column({
         type: DataType.STRING(145),
+        unique: true,
+        allowNull: false,
     })
     email!:string;
+    
     @Column({
-        type: DataType.STRING(100),        
+        type: DataType.STRING(100), 
+        unique: true,
+        allowNull: false,       
     })
     telefono!:string
     @Column({
@@ -31,9 +36,12 @@ class Agenteinmobiliario extends Model{
     })
     cuild!:string;
     @Column({
-        type: DataType.STRING(45)
+        type: DataType.STRING(45),
+        unique: true,
+        allowNull: false,
      })
      dni!:string;
+
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,

@@ -1,8 +1,14 @@
 import { Request,Response } from "express";
 import Agenteinmobiliario from "../models/Agenteinmobiliario.models";
+import bcrypt from 'bcryptjs';
+import jwtoken from 'jsonwebtoken';
+
 
 const subirAgente  = async ( req:Request, res: Response ) =>{
     try{
+     
+        const claveEncriptada = await bcrypt.hash(req.body.clave, 10);
+        req.body.clave = claveEncriptada;
         const agente=await Agenteinmobiliario.create(req.body)
         res.json({data:agente})
     } catch(error){

@@ -35,6 +35,36 @@ const obtenerListaEstadopropiedad = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarestadopropiedad = async (req, res) => {
+  const { id } = req.params;
+  const { Estadopropiedad_id } = req.body;
+
+  try {
+    
+    const agente = await Estadopropiedad.findOne({ where: { id } });
+    if (!agente) {
+      return res.status(404).json({ message: "Status not found" });
+    }
+
+    // Actualiza el registro
+    const [updatedRows] = await Estadopropiedad.update(
+      { Estadopropiedad_id },
+      { where: { id } }
+    );
+
+    if (updatedRows === 0) {
+      return res.status(500).json({ message: "No se pudo actualizar el estado" });
+    }
+
+    const updatedEstadopropiedad = await Estadopropiedad.findOne({ where: { id } });
+    res.status(200).json(updatedEstadopropiedad);
+  } catch (error) {
+    console.error("Error updating agente:", error);
+    res.status(500).json({ message: "Error updating agente" });
+  }
+};
+
 export { subirEstadopropiedad,
      obtenerEstadopropiedadPorId,
-     obtenerListaEstadopropiedad };
+     obtenerListaEstadopropiedad,
+    actualizarestadopropiedad };

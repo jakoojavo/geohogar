@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import db from "./config/db";
+import cookieParser from "cookie-parser";
 const server = express();
 server.use('/uploads', express.static('uploads'));
 // Rutas
@@ -14,16 +15,15 @@ import routerTipoinmueble from "./router/tipoinmueble.router";
 import routerZona from "./router/zona.router";
 import routerEstadopropiedad from "./router/estadopropiead.router";
 import routerAmbientes from "./router/ambientes.router";
+import routerAuth from "./router/auth.router";
+import { corsMiddleware } from "./middlewares/corMiddleware";
 
 
-
-// para la conexion con el fronted
-server.use(cors({
-  origin: "http://localhost:5173", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+server.use(cookieParser());
 server.use(express.json());
+// para la conexion con el fronted
+server.use(corsMiddleware);
+
 
 // Conexión a la base de datos
 async function connectDB() {
@@ -48,11 +48,12 @@ server.use("/api", routerPropiedades);
 server.use("/api", routerTipoinmueble);
 server.use("/api", routerZona);
 server.use("/api", routerAmbientes);
+server.use("/api", routerAuth )
 
 // Puerto
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(` Servidor corriendo en http://localhost:${PORT}`);
 });
 
 export default server;
