@@ -35,6 +35,28 @@ const obtenerListaAmbientes = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarAmbiente = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { ambientes, estado } = req.body;
+
+  try {
+    const ambiente = await Ambientes.findByPk(id);
+
+    if (!ambiente) {
+      return res.status(404).json({ message: "Ambiente no encontrado" });
+    }
+
+    await ambiente.update({ ambientes, estado });
+
+    res.json({ data: ambiente });
+
+  } catch (error) {
+    console.error("Error al actualizar ambiente:", error);
+    res.status(500).json({ message: "Error al actualizar ambiente" });
+  }
+};
+
 export { subirAmbientes,
      obtenerAmbientesPorId,
-     obtenerListaAmbientes };
+     obtenerListaAmbientes,
+    actualizarAmbiente };
