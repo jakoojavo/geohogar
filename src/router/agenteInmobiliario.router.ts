@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { subirAgente,obtenerAgentePorId,obtenerListaAgente,actualizarAgente } from "../handlers/agenteinmobiliario";
+
 const  routerAgente = Router();
 
 
