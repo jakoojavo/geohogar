@@ -35,6 +35,28 @@ const obtenerListaImagen = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarImagen = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { URL, estado, ID_propiedad } = req.body;
+
+  try {
+    const imagen = await Imagen.findByPk(id);
+
+    if (!imagen) {
+      return res.status(404).json({ message: "Imagen no encontrada" });
+    }
+
+    await imagen.update({ URL, estado, ID_propiedad });
+
+    res.json({ data: imagen });
+
+  } catch (error) {
+    console.error("Error al actualizar imagen:", error);
+    res.status(500).json({ message: "Error al actualizar imagen" });
+  }
+};
+
 export { subirImagen,
      obtenerImagenPorId,
-     obtenerListaImagen };
+     obtenerListaImagen,
+     actualizarImagen };

@@ -35,36 +35,28 @@ const obtenerListaEstadopropiedad = async (req: Request, res: Response) => {
     }
 }
 
-const actualizarestadopropiedad = async (req, res) => {
+const actualizarEstadopropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { Estadopropiedad_id } = req.body;
+  const { estado_propiedad, estado } = req.body;
 
   try {
-    
-    const agente = await Estadopropiedad.findOne({ where: { id } });
-    if (!agente) {
-      return res.status(404).json({ message: "Status not found" });
+    const estadopropiedad = await Estadopropiedad.findByPk(id);
+
+    if (!estadopropiedad) {
+      return res.status(404).json({ message: "Estado de propiedad no encontrado" });
     }
 
-    // Actualiza el registro
-    const [updatedRows] = await Estadopropiedad.update(
-      { Estadopropiedad_id },
-      { where: { id } }
-    );
+    await estadopropiedad.update({ estado_propiedad, estado });
 
-    if (updatedRows === 0) {
-      return res.status(500).json({ message: "No se pudo actualizar el estado" });
-    }
+    res.json({ data: estadopropiedad });
 
-    const updatedEstadopropiedad = await Estadopropiedad.findOne({ where: { id } });
-    res.status(200).json(updatedEstadopropiedad);
   } catch (error) {
-    console.error("Error updating agente:", error);
-    res.status(500).json({ message: "Error updating agente" });
+    console.error("Error al actualizar estado de propiedad:", error);
+    res.status(500).json({ message: "Error al actualizar estado de propiedad" });
   }
 };
 
 export { subirEstadopropiedad,
      obtenerEstadopropiedadPorId,
      obtenerListaEstadopropiedad,
-    actualizarestadopropiedad };
+    actualizarEstadopropiedad };

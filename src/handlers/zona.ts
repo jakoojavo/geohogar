@@ -35,6 +35,28 @@ const obtenerListaZona = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarZona = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { zona, estado } = req.body;
+
+  try {
+    const zonaobj = await Zona.findByPk(id);
+
+    if (!zonaobj) {
+      return res.status(404).json({ message: "Zona no encontrada" });
+    }
+
+    await zonaobj.update({ zona, estado });
+
+    res.json({ data: zonaobj });
+
+  } catch (error) {
+    console.error("Error al actualizar zona:", error);
+    res.status(500).json({ message: "Error al actualizar zona" });
+  }
+};
+
 export { subirZona,
      obtenerZonaPorId,
-     obtenerListaZona };
+     obtenerListaZona,
+     actualizarZona };

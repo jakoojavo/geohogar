@@ -35,36 +35,28 @@ const obtenerListaConsulta = async (req: Request, res: Response) => {
     }
 }
 
-const actualizarconsulta = async (req, res) => {
+const actualizarConsulta = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { consulta_id } = req.body;
+  const { nombre_cliente, email, Mensaje, telefono, estado, ID_propiedades, ID_estadoconsulta } = req.body;
 
   try {
-    
-    const agente = await Consulta.findOne({ where: { id } });
-    if (!agente) {
-      return res.status(404).json({ message: "Status not found" });
+    const consulta = await Consulta.findByPk(id);
+
+    if (!consulta) {
+      return res.status(404).json({ message: "Consulta no encontrada" });
     }
 
-    // Actualiza el registro
-    const [updatedRows] = await Consulta.update(
-      { consulta_id },
-      { where: { id } }
-    );
+    await consulta.update({ nombre_cliente, email, Mensaje, telefono, estado, ID_propiedades, ID_estadoconsulta });
 
-    if (updatedRows === 0) {
-      return res.status(500).json({ message: "No se pudo actualizar el estado" });
-    }
+    res.json({ data: consulta });
 
-    const updatedconsulta = await Consulta.findOne({ where: { id } });
-    res.status(200).json(updatedconsulta);
   } catch (error) {
-    console.error("Error updating agente:", error);
-    res.status(500).json({ message: "Error updating agente" });
+    console.error("Error al actualizar consulta:", error);
+    res.status(500).json({ message: "Error al actualizar consulta" });
   }
 };
 
 export { subirConsulta,
      obtenerConsultaPorId,
      obtenerListaConsulta,
-    actualizarconsulta };
+    actualizarConsulta };

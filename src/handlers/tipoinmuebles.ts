@@ -35,6 +35,28 @@ const obtenerListaTipoinmueble = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarTipoinmueble = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { inmueble, estado } = req.body;
+
+  try {
+    const tipoinmueble = await Tipoinmueble.findByPk(id);
+
+    if (!tipoinmueble) {
+      return res.status(404).json({ message: "Tipo de inmueble no encontrado" });
+    }
+
+    await tipoinmueble.update({ inmueble, estado });
+
+    res.json({ data: tipoinmueble });
+
+  } catch (error) {
+    console.error("Error al actualizar tipo de inmueble:", error);
+    res.status(500).json({ message: "Error al actualizar tipo de inmueble" });
+  }
+};
+
 export { subirTipoinmueble,
      obtenerTipoinmueblePorId,
-     obtenerListaTipoinmueble };
+     obtenerListaTipoinmueble,
+     actualizarTipoinmueble };

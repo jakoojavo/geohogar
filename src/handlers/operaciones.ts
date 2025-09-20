@@ -35,6 +35,28 @@ const obtenerListaOperacion = async (req: Request, res: Response) => {
     }
 }
 
+const actualizarOperacion = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { tipo, fechainicio, fechafin, estado, ID_propiedades } = req.body;
+
+  try {
+    const operacion = await Operacion.findByPk(id);
+
+    if (!operacion) {
+      return res.status(404).json({ message: "Operación no encontrada" });
+    }
+
+    await operacion.update({ tipo, fechainicio, fechafin, estado, ID_propiedades });
+
+    res.json({ data: operacion });
+
+  } catch (error) {
+    console.error("Error al actualizar operación:", error);
+    res.status(500).json({ message: "Error al actualizar operación" });
+  }
+};
+
 export { subirOperacion,
      obtenerOperacionPorId,
-     obtenerListaOperacion };
+     obtenerListaOperacion,
+     actualizarOperacion };
