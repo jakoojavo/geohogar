@@ -17,7 +17,9 @@ const obtenerListaMascota = async (req: Request, res: Response) => {
       res.json({ data: consulta });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error al obtener el listado de consulta" });
+      console.error('❌ Error en obtenerListaMascota:', error);
+      res.status(500).json({ message: 'Error al obtener mascotas', details: error.message });
+
     }
   };
 
