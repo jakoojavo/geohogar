@@ -4,7 +4,7 @@ import  Propiedades  from "./Propiedades.models";
 
 @Table({
   tableName: "operacion",
-  timestamps: false
+  timestamps: true
 })
 class Operacion extends Model {
   @PrimaryKey

@@ -12,7 +12,7 @@ import Mascota from "./Mascota.models";
 
 @Table({
   tableName: "propiedades",
-  timestamps: false
+  timestamps: true
 })
 
 class Propiedades extends Model {
