@@ -3,7 +3,7 @@ import  Propiedades  from "./Propiedades.models";
 
 @Table({
     tableName:"zona",
-    timestamps: false
+    timestamps: true
 })
 
 class Zona extends Model{

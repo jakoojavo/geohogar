@@ -4,7 +4,7 @@ import  Propiedades  from "./Propiedades.models";
 
 @Table({
     tableName:"estadopropiedad",
-    timestamps: false
+    timestamps: true
 })
 
 class Estadopropiedad extends Model{

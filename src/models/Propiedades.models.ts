@@ -12,7 +12,7 @@ import Mascota from "./Mascota.models";
 
 @Table({
   tableName: "propiedades",
-  timestamps: false
+  timestamps: true
 })
 
 class Propiedades extends Model {
@@ -124,14 +124,18 @@ class Propiedades extends Model {
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
+
     defaultValue: false
+
   })
   acepta_mascota!: boolean;
 
   @ForeignKey(() => Mascota)
   @Column({
     type: DataType.INTEGER,
+
     allowNull: true,
+
   })
   ID_Mascota!: number;
 

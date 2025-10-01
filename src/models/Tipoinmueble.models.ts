@@ -3,7 +3,7 @@ import  Propiedades  from "./Propiedades.models";
 
 @Table({
     tableName:"tipoinmueble",
-    timestamps: false
+    timestamps: true
 })
 
 class Tipoinmueble extends Model{

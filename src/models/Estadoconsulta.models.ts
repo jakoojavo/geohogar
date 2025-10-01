@@ -4,7 +4,7 @@ import Consulta from "./Consultas.models";
 
 @Table({
     tableName:"estadoconsulta",
-    timestamps: false
+    timestamps: true
 })
 
 class Estadoconsulta extends Model{
