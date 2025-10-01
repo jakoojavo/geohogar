@@ -42,32 +42,24 @@ const obtenerListaAgente = async (req: Request, res: Response) => {
 }
 
 
-const actualizarAgente = async (req, res) => {
+const actualizarAgente = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { agente_id } = req.body;
+  const { nombre, email, telefono, cuild, dni, estado, clave, matricula, observaciones, esadmin } = req.body;
 
   try {
-    
-    const agente = await Agenteinmobiliario.findOne({ where: { id } });
+    const agente = await Agenteinmobiliario.findByPk(id);
+
     if (!agente) {
-      return res.status(404).json({ message: "Status not found" });
+      return res.status(404).json({ message: "Agente Inmobiliario no encontrado" });
     }
 
-    // Actualiza el registro
-    const [updatedRows] = await Agenteinmobiliario.update(
-      { agente_id },
-      { where: { id } }
-    );
+    await agente.update({ nombre, email, telefono, cuild, dni, estado, clave, matricula, observaciones, esadmin });
 
-    if (updatedRows === 0) {
-      return res.status(500).json({ message: "No se pudo actualizar el estado" });
-    }
+    res.json({ data: agente });
 
-    const updatedagente = await Agenteinmobiliario.findOne({ where: { id } });
-    res.status(200).json(updatedagente);
   } catch (error) {
-    console.error("Error updating agente:", error);
-    res.status(500).json({ message: "Error updating agente" });
+    console.error("Error al actualizar agente inmobiliario:", error);
+    res.status(500).json({ message: "Error al actualizar agente inmobiliario" });
   }
 };
 

@@ -4,6 +4,7 @@ import db from "./config/db";
 import cookieParser from "cookie-parser";
 const server = express();
 server.use('/uploads', express.static('uploads'));
+
 // Rutas
 import routerAgente from "./router/agenteInmobiliario.router";
 import routerEstadoconsulta from "./router/estadoconsulta.router";
@@ -16,6 +17,7 @@ import routerZona from "./router/zona.router";
 import routerEstadopropiedad from "./router/estadopropiead.router";
 import routerAmbientes from "./router/ambientes.router";
 import routerAuth from "./router/auth.router";
+import routerMascota from "./router/mascota.router";
 import { corsMiddleware } from "./middlewares/corMiddleware";
 
 
@@ -37,6 +39,20 @@ async function connectDB() {
 }
 connectDB();
 
+
+// async function connectDB() {
+//    try {
+//        await db.authenticate(); // Verificar conexión con la base de datos
+//        console.log("Conexión a la base de datos exitosa");
+
+//        await db.sync({ force: true }); // Sincronizar tablas (¡Cuidado con force en producción!)
+//        console.log("Tablas sincronizadas");
+//      } catch (error) {
+//        console.error("Error al conectar o sincronizar la base de datos:", error);
+//      }
+//    }
+//   connectDB()
+
 // Rutas
 server.use("/api", routerAgente);
 server.use("/api", routerEstadoconsulta);
@@ -48,6 +64,7 @@ server.use("/api", routerPropiedades);
 server.use("/api", routerTipoinmueble);
 server.use("/api", routerZona);
 server.use("/api", routerAmbientes);
+server.use("/api", routerMascota);
 server.use("/api", routerAuth )
 
 // Puerto

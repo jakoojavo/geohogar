@@ -3,7 +3,7 @@ import  Propiedades  from "./Propiedades.models";
 
 @Table({
     tableName:"imagen",
-    timestamps: false
+    timestamps: true
 })
 
 class Imagen extends Model{

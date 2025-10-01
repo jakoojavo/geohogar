@@ -7,11 +7,12 @@ import Zona from "./Zona.models";
 import Operacion from "./Operaciones.models";
 import Consulta from "./Consultas.models";
 import Ambientes from "./Ambientes.models";
+import Mascota from "./Mascota.models";
 
 
 @Table({
   tableName: "propiedades",
-  timestamps: false
+  timestamps: true
 })
 
 class Propiedades extends Model {
@@ -28,7 +29,7 @@ class Propiedades extends Model {
   direccion!: string;
 
   @Column({
-    type: DataType.DECIMAL(12,2)
+    type: DataType.DECIMAL(12, 2)
   })
   precio!: number;
 
@@ -40,10 +41,6 @@ class Propiedades extends Model {
   @Column({
     type: DataType.STRING(125)
   })
-  geolocalizacion!: string;
-  @Column({
-    type: DataType.STRING(125)
-  })
   latitud!: string;
   @Column({
     type: DataType.STRING(125)
@@ -51,11 +48,11 @@ class Propiedades extends Model {
   longitud!: string;
 
   @Column({
-        type: DataType.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
-    })
-    estado!:boolean;
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  estado!: boolean;
 
   @ForeignKey(() => Zona)
   @Column({
@@ -102,6 +99,47 @@ class Propiedades extends Model {
 
   @BelongsTo(() => Ambientes)
   ambientes!: Ambientes;
+
+   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  garage!: boolean;
+
+   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  balcon!: boolean;
+
+   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  patio!: boolean;
+
+   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  acepta_mascota!: boolean;
+
+  @ForeignKey(() => Mascota)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  ID_Mascota!: number;
+
+  @BelongsTo(() => Mascota)
+  Mascota!: Mascota;
+
+
+
+
 
   @HasMany(() => Imagen)
   imagenes!: Imagen[];
