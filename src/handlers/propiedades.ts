@@ -283,11 +283,9 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
 const actualizarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
   const {
-    titulo,
     direccion,
     precio,
     descripcion,
-    geolocalizacion,
     latitud,
     longitud,
     estado,
@@ -435,52 +433,52 @@ const ocultarPropiedad = async (req: Request, res: Response) => {
 
 
 
-const actualizarPropiedad = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const {
-    direccion,
-    precio,
-    descripcion,
-    geolocalizacion,
-    latitud,
-    longitud,
-    estado,
-    ID_zona,
-    ID_agente,
-    ID_tipoinmueble,
-    ID_estadopropiedad,
-    ID_ambiente
-  } = req.body;
+// const actualizarPropiedad = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const {
+//     direccion,
+//     precio,
+//     descripcion,
+//     geolocalizacion,
+//     latitud,
+//     longitud,
+//     estado,
+//     ID_zona,
+//     ID_agente,
+//     ID_tipoinmueble,
+//     ID_estadopropiedad,
+//     ID_ambiente
+//   } = req.body;
 
-  try {
-    const propiedad = await Propiedades.findByPk(id);
+//   try {
+//     const propiedad = await Propiedades.findByPk(id);
 
-    if (!propiedad) {
-      return res.status(404).json({ message: "Propiedad no encontrada" });
-    }
+//     if (!propiedad) {
+//       return res.status(404).json({ message: "Propiedad no encontrada" });
+//     }
 
-    await propiedad.update({
-      direccion,
-      precio,
-      descripcion,
-      geolocalizacion,
-      latitud,
-      longitud,
-      estado,
-      ID_zona,
-      ID_agente,
-      ID_tipoinmueble,
-      ID_estadopropiedad,
-      ID_ambiente
-    });
+//     await propiedad.update({
+//       direccion,
+//       precio,
+//       descripcion,
+//       geolocalizacion,
+//       latitud,
+//       longitud,
+//       estado,
+//       ID_zona,
+//       ID_agente,
+//       ID_tipoinmueble,
+//       ID_estadopropiedad,
+//       ID_ambiente
+//     });
 
-    res.json({ data: propiedad });
+//     res.json({ data: propiedad });
 
-  } catch (error) {
-    console.error("Error al actualizar propiedad:", error);
-    res.status(500).json({ message: "Error al actualizar propiedad" });
-  }
-};
+//   } catch (error) {
+//     console.error("Error al actualizar propiedad:", error);
+//     res.status(500).json({ message: "Error al actualizar propiedad" });
+//   }
+// };
 
 export { subirPropiedades,
      obtenerPropiedadesPorId,
