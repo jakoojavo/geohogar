@@ -266,7 +266,15 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
         {
           model: Ambientes,
           attributes: ['ambientes'],
+        },{
+          model: Mascota,
+          attributes: ['Mascota'],
+        
         },
+        {
+          model: Imagenes,
+          attributes: ['ID_imagen', 'URL', 'estado'],
+        }
       ],
     });
 
@@ -549,4 +557,5 @@ export { subirPropiedades,
      obtenerPropiedadesPorId,
      obtenerListaPropiedades,
      actualizarPropiedad,
+     ocultarPropiedad,
      buscarPropiedadesPorFiltro};
