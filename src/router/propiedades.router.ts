@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { subirPropiedades, obtenerListaPropiedades, obtenerPropiedadesPorId, actualizarPropiedad, buscarPropiedadesPorFiltro } from "../handlers/propiedades";
+import { subirPropiedades, obtenerListaPropiedades, obtenerPropiedadesPorId, actualizarPropiedad, ocultarPropiedad, buscarPropiedadesPorFiltro } from "../handlers/propiedades";
 import upload from "../middlewares/uploadMiddleware";
 
 const routerPropiedades = Router();
@@ -12,7 +12,7 @@ routerPropiedades.get('/propiedades/filtrar', buscarPropiedadesPorFiltro);
 routerPropiedades.get('/propiedades/:id', obtenerPropiedadesPorId);
 routerPropiedades.put('/propiedades/:id', actualizarPropiedad);
 
-routerPropiedades.patch('/propiedades/:id/estado', actualizarEstadoPropiedad);
+routerPropiedades.patch('/propiedades/:id/estado', actualizarPropiedad);
 routerPropiedades.patch('/propiedades/:id/ocultar', ocultarPropiedad);
 
 
