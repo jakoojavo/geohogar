@@ -6,6 +6,7 @@ import Zona from '../models/Zona.models';
 import Estadopropiedad from '../models/Estadopropiedad.models';
 import Ambientes from '../models/Ambientes.models';
 import Imagen from "../models/Imagen.models";
+import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
 
 
@@ -117,7 +118,11 @@ console.log('🔍 BACKEND - Después de destructuring:');
 import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 
+<<<<<<< HEAD
 // ========HANDLER GET - Listado de propiedades (CORREGIDO)=====================
+=======
+
+>>>>>>> ef65ff2e896a37b0166b49848ab491cb6cb28889
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
   try {
     const consulta = await Propiedades.findAll({
@@ -241,10 +246,14 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
     const consulta = await Propiedades.findByPk(id, {
  
       attributes: {
-        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente'],
+        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente','ID_Mascota'],
       },
  
       include: [
+        { model: Mascota,
+          attributes: ['Mascota']
+        },
+
         {
           model: Agenteinmobiliario,
           
