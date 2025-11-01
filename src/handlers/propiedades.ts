@@ -6,6 +6,7 @@ import Zona from '../models/Zona.models';
 import Estadopropiedad from '../models/Estadopropiedad.models';
 import Ambientes from '../models/Ambientes.models';
 import Imagen from "../models/Imagen.models";
+import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
 
 
@@ -95,6 +96,7 @@ const subirPropiedades = async (req: Request, res: Response) => {
 
 //AGREGAADO
 import Imagenes from "../models/Imagen.models"; 
+
 
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
   try {
@@ -189,10 +191,14 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
     const consulta = await Propiedades.findByPk(id, {
  
       attributes: {
-        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente'],
+        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente','ID_Mascota'],
       },
  
       include: [
+        { model: Mascota,
+          attributes: ['Mascota']
+        },
+
         {
           model: Agenteinmobiliario,
           
