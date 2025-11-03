@@ -13,20 +13,20 @@ class Estadopropiedad extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_estadopropiedad!:number;
+    declare ID_estadopropiedad:number;
     @Column({
         type: DataType.STRING(45),
     })
-    estado_propiedad!:string;
+    declare estado_propiedad:string;
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
 
     @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    declare propiedades: Propiedades[];
 }
 
 export default Estadopropiedad

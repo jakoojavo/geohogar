@@ -21,73 +21,73 @@ class Propiedades extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  ID_propiedades!: number;
+  declare ID_propiedades: number;
 
   @Column({
     type: DataType.STRING(255),
   })
-  direccion!: string;
+  declare direccion: string;
 
   @Column({
     type: DataType.DECIMAL(12, 2)
   })
-  precio!: number;
+  declare precio: number;
 
   @Column({
     type: DataType.STRING(225)
   })
-  descripcion!: string;
+  declare descripcion: string;
 
   @Column({
     type: DataType.STRING(125)
   })
-  latitud!: string;
+  declare latitud: string;
   @Column({
     type: DataType.STRING(125)
   })
-  longitud!: string;
+  declare longitud: string;
 
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true
   })
-  estado!: boolean;
+  declare estado: boolean;
 
   @ForeignKey(() => Zona)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_zona!: number;
+  declare ID_zona: number;
   @BelongsTo(() => Zona)
-  zona!: Zona;
+  declare zona: Zona;
 
   @ForeignKey(() => Agenteinmobiliario)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_agente!: number;
+  declare ID_agente: number;
 
   @BelongsTo(() => Agenteinmobiliario)
-  agenteinmobiliario!: Agenteinmobiliario;
+  declare agenteinmobiliario: Agenteinmobiliario;
 
   @ForeignKey(() => Tipoinmueble)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_tipoinmueble!: number;
+  declare ID_tipoinmueble: number;
 
   @BelongsTo(() => Tipoinmueble)
-  tipoinmueble!: Tipoinmueble;
+  declare tipoinmueble: Tipoinmueble;
 
   @ForeignKey(() => Estadopropiedad)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_estadopropiedad!: number;
+  declare ID_estadopropiedad: number;
 
   @BelongsTo(() => Estadopropiedad)
-  estadopropiedad!: Estadopropiedad;
+  declare estadopropiedad: Estadopropiedad;
 
 
 
@@ -95,61 +95,61 @@ class Propiedades extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  ID_ambiente!: number;
+  declare ID_ambiente: number;
 
   @BelongsTo(() => Ambientes)
-  ambientes!: Ambientes;
+  declare ambientes: Ambientes;
 
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true
   })
-  garage!: boolean;
+  declare garage: boolean;
 
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true
   })
-  balcon!: boolean;
+  declare balcon: boolean;
 
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true
   })
-  patio!: boolean;
+  declare patio: boolean;
 
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true
   })
-  acepta_mascota!: boolean;
+  declare acepta_mascota: boolean;
 
   @ForeignKey(() => Mascota)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_Mascota!: number;
+  declare ID_Mascota: number;
 
   @BelongsTo(() => Mascota)
-  Mascota!: Mascota;
+  declare Mascota: Mascota;
 
 
 
 
 
   @HasMany(() => Imagen)
-  imagenes!: Imagen[];
+  declare imagenes: Imagen[];
 
 
   @HasMany(() => Operacion)
-  operaciones!: Operacion[];
+  declare operaciones: Operacion[];
 
   @HasMany(() => Consulta)
-  consultas!: Consulta[];
+  declare consultas: Consulta[];
 
 
 }

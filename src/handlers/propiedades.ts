@@ -13,22 +13,25 @@ import { Op } from "sequelize";
 //Agregado 
 const subirPropiedades = async (req: Request, res: Response) => {
   try {
+    console.log('Body recibido:', req.body);
     const {
-      direccion, precio, descripcion, geolocalizacion,latitud,longitud,
+      direccion, precio, descripcion,latitud,longitud,
       estado, ID_zona, ID_agente, ID_tipoinmueble,
-      ID_estadopropiedad, ID_ambiente
+      ID_estadopropiedad, ID_ambiente,ID_Mascota, garage, balcon, patio, acepta_mascota
     } = req.body;
 
-    const parseOrNull = (value: string) => {
-  return value === '' ? null : parseInt(value);
-};
+    const parseOrNull = (value: any) => {
+      if (value === '' || value === null || value === undefined || isNaN(parseInt(value))) {
+        return null;
+      }
+      return parseInt(value);
+    };
 
 
     const propiedad = await Propiedades.create({
         direccion,
         precio,
         descripcion,
-        geolocalizacion,
         latitud,
         longitud,
         estado: estado === 'true' || estado === true,
@@ -36,7 +39,12 @@ const subirPropiedades = async (req: Request, res: Response) => {
         ID_agente: parseOrNull(ID_agente),
         ID_tipoinmueble: parseOrNull(ID_tipoinmueble),
         ID_estadopropiedad: parseOrNull(ID_estadopropiedad),
-        ID_ambiente: parseOrNull(ID_ambiente)
+        ID_ambiente: parseOrNull(ID_ambiente),
+        ID_Mascota: parseOrNull(ID_Mascota),
+        garage: garage === 'true' || garage === true,
+        balcon: balcon === 'true' || balcon === true,
+        patio: patio === 'true' || patio === true,
+        acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true
 });
       console.log('Archivos recibidos:', req.files);
       console.log('Body recibido:', req.body);
@@ -305,7 +313,6 @@ const actualizarPropiedad = async (req: Request, res: Response) => {
     direccion,
     precio,
     descripcion,
-    geolocalizacion,
     latitud,
     longitud,
     estado,
@@ -327,7 +334,6 @@ const actualizarPropiedad = async (req: Request, res: Response) => {
       direccion,
       precio,
       descripcion,
-      geolocalizacion,
       latitud,
       longitud,
       estado,

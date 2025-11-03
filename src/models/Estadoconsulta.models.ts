@@ -13,20 +13,20 @@ class Estadoconsulta extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_estadoconsulta!:number;
+    declare ID_estadoconsulta:number;
     @Column({
         type: DataType.STRING(45),
     })
-    estado_consulta!:string;
+    declare estado_consulta:string;
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
 
     @HasMany(() => Consulta)
-    consultas!: Consulta[];
+    declare consultas: Consulta[];
 }
 
 export default Estadoconsulta

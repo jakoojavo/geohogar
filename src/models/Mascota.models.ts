@@ -12,21 +12,21 @@ class Mascota extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_Mascota!:number;
+    declare ID_Mascota:number;
     @Column({
         type: DataType.STRING(145),
     })
-    Mascota!:string;
+    declare Mascota:string;
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;    
+    declare estado:boolean;    
 
     @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    declare propiedades: Propiedades[];
 }
 
 export default Mascota

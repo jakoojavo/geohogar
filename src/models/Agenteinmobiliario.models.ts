@@ -13,63 +13,63 @@ class Agenteinmobiliario extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_agente!:number;
+    declare ID_agente:number;
     @Column({
         type: DataType.STRING(145),
     })
-    nombre!:string;
+    declare nombre:string;
     @Column({
         type: DataType.STRING(145),
         unique: true,
         allowNull: false,
     })
-    email!:string;
+    declare email:string;
     
     @Column({
         type: DataType.STRING(100), 
         unique: true,
         allowNull: false,       
     })
-    telefono!:string
+    declare telefono:string
     @Column({
         type: DataType.STRING(45)
     })
-    cuild!:string;
+    declare cuild:string;
     @Column({
         type: DataType.STRING(45),
         unique: true,
         allowNull: false,
      })
-     dni!:string;
+     declare dni:string;
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
     @Column({
         type: DataType.STRING(255)
     })
-    clave!:string;
+    declare clave:string;
     @Column({
         type: DataType.STRING(45)
     })
-    matricula!:string;
+    declare matricula:string;
     @Column({
         type: DataType.STRING(145)
     })
-    observaciones!:string
+    declare observaciones:string
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: false
     })
-    esadmin!:boolean;
+    declare esadmin:boolean;
 
     @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    declare propiedades: Propiedades[];
 }
 
 export default Agenteinmobiliario

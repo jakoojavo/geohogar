@@ -12,21 +12,21 @@ class Ambientes extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_ambiente!:number;
+    declare ID_ambiente:number;
     @Column({
         type: DataType.STRING(145),
     })
-    ambientes!:string;
+    declare ambientes:string;
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;    
+    declare estado:boolean;    
 
     @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    declare propiedades: Propiedades[];
 }
 
 export default Ambientes
