@@ -124,13 +124,18 @@ class Propiedades extends Model {
    @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
-    defaultValue: true
+
+    defaultValue: false
+
   })
   declare acepta_mascota: boolean;
 
   @ForeignKey(() => Mascota)
   @Column({
     type: DataType.INTEGER,
+
+    allowNull: true,
+
   })
   declare ID_Mascota: number;
 

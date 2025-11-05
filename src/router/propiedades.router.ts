@@ -12,4 +12,8 @@ routerPropiedades.get('/propiedades/filtrar', buscarPropiedadesPorFiltro);
 routerPropiedades.get('/propiedades/:id', obtenerPropiedadesPorId);
 routerPropiedades.put('/propiedades/:id', actualizarPropiedad);
 
+routerPropiedades.patch('/propiedades/:id/estado', actualizarEstadoPropiedad);
+routerPropiedades.patch('/propiedades/:id/ocultar', ocultarPropiedad);
+
+
 export default routerPropiedades;

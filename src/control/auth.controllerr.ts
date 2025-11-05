@@ -50,6 +50,8 @@ export const login = async (req, res) => {
             // Al enviar el usuario, podrías enviar también las especialidades
             // userFound.toJSON() es útil para obtener un objeto plano con las relaciones
             res.json({
+                token,
+                user: {
                 id: userFound.dataValues.ID_agente, // Usa ID_users
                 nombre: userFound.dataValues.nombre,
                 email: userFound.dataValues.email,
@@ -60,6 +62,8 @@ export const login = async (req, res) => {
                 esadmin: userFound.dataValues.esadmin,
                 estado: userFound.dataValues.estado, // Las especialidades ahora se obtienen directamente aquí
                 createdAt: userFound.dataValues.createdAt // Sequelize usa createdAt/updatedAt por defecto
+                }
+                
             });
 
         });
@@ -85,44 +89,53 @@ export const profile = async (req, res) => {
     });
       if (!userFound) return res.status(400).json({ message: 'User not found' });
 
-    res.json({
-        id: userFound.dataValues.ID_agente, // Usa ID_users
-                nombre: userFound.dataValues.nombre,
-                email: userFound.dataValues.email,
-                DNI: userFound.dataValues.dni,
-                cuild: userFound.dataValues.cuild,
-                telefono: userFound.dataValues.telefono,
-                matricula: userFound.dataValues.matricula,
-                esadmin: userFound.dataValues.esadmin,
-                estado: userFound.dataValues.estado, // Las especialidades ahora se obtienen directamente aquí
-                createdAt: userFound.dataValues.createdAt // // Sequelize usa createdAt/updatedAt por defecto
+     res.json({
+        
+        user: {
+            id: userFound.dataValues.ID_agente,
+            nombre: userFound.dataValues.nombre,
+            email: userFound.dataValues.email,
+            DNI: userFound.dataValues.dni,
+            cuild: userFound.dataValues.cuild,
+            telefono: userFound.dataValues.telefono,
+            matricula: userFound.dataValues.matricula,
+            esadmin: userFound.dataValues.esadmin,
+            estado: userFound.dataValues.estado,
+            createdAt: userFound.dataValues.createdAt
+        }
     });
 };
 
 export const verify = async (req, res) => {
-    const { token } = req.cookies;
+  const { token } = req.cookies;
 
-    if (!token) return res.status(401).json(['No autorizado']);
+  if (!token) return res.status(401).json(['No autorizado']);
 
-    jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
-        if (err) return res.status(401).json(['No autorizado']);
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, decoded) => {
+    if (err) return res.status(401).json(['No autorizado']);
 
-        const userFound = await agenteinmobiliario.findByPk(user.id, { 
-            attributes: ['ID_agente', 'nombre', 'email', 'telefono', 'estado', 'cuild', 'dni','matricula', 'esadmin', 'createdAt'] 
-        });
-        if (!userFound) return res.status(401).json(['No autorizado']);
-
-        return res.json({
-            id: userFound.dataValues.ID_agente, 
-                nombre: userFound.dataValues.nombre,
-                email: userFound.dataValues.email,
-                DNI: userFound.dataValues.dni,
-                cuild: userFound.dataValues.cuild,
-                telefono: userFound.dataValues.telefono,
-                matricula: userFound.dataValues.matricula,
-                esadmin: userFound.dataValues.esadmin,
-                estado: userFound.dataValues.estado, 
-                createdAt: userFound.dataValues.createdAt 
-        });
+    const userFound = await agenteinmobiliario.findByPk(decoded.id, {
+      attributes: [
+        'ID_agente', 'nombre', 'email', 'telefono', 'estado',
+        'cuild', 'dni', 'matricula', 'esadmin', 'createdAt'
+      ]
     });
+
+    if (!userFound) return res.status(401).json(['No autorizado']);
+
+    return res.json({
+      user: {
+        id: userFound.dataValues.ID_agente,
+        nombre: userFound.dataValues.nombre,
+        email: userFound.dataValues.email,
+        DNI: userFound.dataValues.dni,
+        cuild: userFound.dataValues.cuild,
+        telefono: userFound.dataValues.telefono,
+        matricula: userFound.dataValues.matricula,
+        esadmin: userFound.dataValues.esadmin,
+        estado: userFound.dataValues.estado,
+        createdAt: userFound.dataValues.createdAt
+      }
+    });
+  });
 };
