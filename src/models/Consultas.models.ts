@@ -12,47 +12,47 @@ class Consulta extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  ID_consulta!: number;
+  declare ID_consulta: number;
 
   @Column({
     type: DataType.STRING(145),
   })
-  nombre_cliente!: string;
+  declare nombre_cliente: string;
   @Column({
     type: DataType.STRING(45),
   })
-  email!: string;
+  declare email: string;
   @Column({
     type: DataType.STRING(125),
   })
-  Mensaje!:string;
+  declare Mensaje:string;
   @Column({
     type: DataType.STRING(45),
   })
-  telefono!:String
+  declare telefono:String
   @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
   
   @ForeignKey(() => Propiedades)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_propiedades!: number;
+  declare ID_propiedades: number;
 
   @BelongsTo(() => Propiedades)
-  propiedad!: Propiedades;
+  declare propiedad: Propiedades;
 
   @ForeignKey(() => Estadoconsulta)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_estadoconsulta!: number;
+  declare ID_estadoconsulta: number;
 
   @BelongsTo(() => Estadoconsulta)
-  estado_consulta!: Estadoconsulta;
+  declare estado_consulta: Estadoconsulta;
 }
 export default Consulta;

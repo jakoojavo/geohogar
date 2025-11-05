@@ -6,30 +6,26 @@ import Zona from '../models/Zona.models';
 import Estadopropiedad from '../models/Estadopropiedad.models';
 import Ambientes from '../models/Ambientes.models';
 import Imagen from "../models/Imagen.models";
+import Mascota from "../models/Mascota.models";
+import { Op } from "sequelize";
 
 
 //Agregado 
 const subirPropiedades = async (req: Request, res: Response) => {
   try {
-    console.log('🔍 BACKEND - Body recibido:', req.body);
-    console.log('🔍 BACKEND - acepta_mascota recibido:', req.body.acepta_mascota);
-    console.log('🔍 BACKEND - Tipo:', typeof req.body.acepta_mascota);
-    console.log('🔍 BACKEND - ID_Mascota recibido:', req.body.ID_Mascota);
+    console.log('Body recibido:', req.body);
     const {
-      direccion, precio, descripcion, geolocalizacion,latitud,longitud,
+      direccion, precio, descripcion,latitud,longitud,
       estado, ID_zona, ID_agente, ID_tipoinmueble,
-      ID_estadopropiedad, ID_ambiente, ID_Mascota, garage, balcon, patio, acepta_mascota
-
+      ID_estadopropiedad, ID_ambiente,ID_Mascota, garage, balcon, patio, acepta_mascota
     } = req.body;
-console.log('🔍 BACKEND - Después de destructuring:');
-    console.log('  acepta_mascota:', acepta_mascota);
-    console.log('  garage:', garage);
-    console.log('  balcon:', balcon);
-    console.log('  patio:', patio);
-    console.log('  ID_Mascota:', ID_Mascota);
+
     const parseOrNull = (value: any) => {
-  return value === '' || value === undefined || value === null ? null : parseInt(value);
-};
+      if (value === '' || value === null || value === undefined || isNaN(parseInt(value))) {
+        return null;
+      }
+      return parseInt(value);
+    };
 
 
 
@@ -37,7 +33,6 @@ console.log('🔍 BACKEND - Después de destructuring:');
         direccion,
         precio,
         descripcion,
-        geolocalizacion,
         latitud,
         longitud,
         acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true,
@@ -50,9 +45,11 @@ console.log('🔍 BACKEND - Después de destructuring:');
         ID_tipoinmueble: parseOrNull(ID_tipoinmueble),
         ID_estadopropiedad: parseOrNull(ID_estadopropiedad),
         ID_ambiente: parseOrNull(ID_ambiente),
-        //Agregado para la llave foranea de mascota
-        ID_Mascota: acepta_mascota === 'true' || acepta_mascota === true ? parseOrNull(ID_Mascota) : null
-
+        ID_Mascota: parseOrNull(ID_Mascota),
+        garage: garage === 'true' || garage === true,
+        balcon: balcon === 'true' || balcon === true,
+        patio: patio === 'true' || patio === true,
+        acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true
 });
       console.log('Archivos recibidos:', req.files);
       console.log('🖼️ Cantidad de imágenes recibidas:', Array.isArray(req.files) ? req.files.length : 'No es array');
@@ -116,7 +113,7 @@ console.log('🔍 BACKEND - Después de destructuring:');
 import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 
-// ========HANDLER GET - Listado de propiedades (CORREGIDO)=====================
+
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
   try {
     const consulta = await Propiedades.findAll({
@@ -240,10 +237,14 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
     const consulta = await Propiedades.findByPk(id, {
  
       attributes: {
-        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente'],
+        exclude: ['ID_zona', 'ID_agente', 'ID_tipoinmueble', 'ID_estadopropiedad', 'ID_ambiente','ID_Mascota'],
       },
  
       include: [
+        { model: Mascota,
+          attributes: ['Mascota']
+        },
+
         {
           model: Agenteinmobiliario,
           
@@ -435,13 +436,76 @@ const ocultarPropiedad = async (req: Request, res: Response) => {
 
 
 
+const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
+    try {
+        const {
+            precio_desde,
+            precio_hasta,
+            ID_zona,
+            ID_tipoinmueble,
+            ID_ambiente,
+            ID_estadopropiedad,
+            garage,
+            balcon,
+            patio,
+            acepta_mascota,
+        } = req.query;
+
+        const where: any = {};
+
+        if (precio_desde && precio_hasta) {
+            where.precio = { [Op.between]: [precio_desde, precio_hasta] };
+        }
+        if (ID_zona) {
+            where.ID_zona = ID_zona;
+        }
+        if (ID_tipoinmueble) {
+            where.ID_tipoinmueble = ID_tipoinmueble;
+        }
+        if (ID_ambiente) {
+            where.ID_ambiente = ID_ambiente;
+        }
+        if (ID_estadopropiedad) {
+            where.ID_estadopropiedad = ID_estadopropiedad;
+        }
+        if (garage) {
+            where.garage = garage === 'true';
+        }
+        if (balcon) {
+            where.balcon = balcon === 'true';
+        }
+        if (patio) {
+            where.patio = patio === 'true';
+        }
+        if (acepta_mascota) {
+            where.acepta_mascota = acepta_mascota === 'true';
+        }
+
+        const propiedades = await Propiedades.findAll({
+            where,
+            include: [
+                { model: Agenteinmobiliario, attributes: ['nombre', 'matricula'] },
+                { model: Zona, attributes: ['zona'] },
+                { model: Tipoinmueble, attributes: ['inmueble'] },
+                { model: Estadopropiedad, attributes: ['estado_propiedad'] },
+                { model: Ambientes, attributes: ['ambientes'] },
+                { model: Imagenes, attributes: ['ID_imagen', 'URL', 'estado'] }
+            ],
+        });
+
+        res.json({ data: propiedades });
+    } catch (error) {
+        console.error("Error al buscar propiedades por filtro:", error);
+        res.status(500).json({ message: "Error al buscar propiedades por filtro" });
+    }
+};
+
 const actualizarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
   const {
     direccion,
     precio,
     descripcion,
-    geolocalizacion,
     latitud,
     longitud,
     estado,
@@ -463,7 +527,6 @@ const actualizarPropiedad = async (req: Request, res: Response) => {
       direccion,
       precio,
       descripcion,
-      geolocalizacion,
       latitud,
       longitud,
       estado,
@@ -485,8 +548,5 @@ const actualizarPropiedad = async (req: Request, res: Response) => {
 export { subirPropiedades,
      obtenerPropiedadesPorId,
      obtenerListaPropiedades,
-
      actualizarPropiedad,
-     actualizarEstadoPropiedad,
-    ocultarPropiedad};
-
+     buscarPropiedadesPorFiltro};

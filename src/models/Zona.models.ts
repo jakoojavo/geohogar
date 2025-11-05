@@ -12,21 +12,21 @@ class Zona extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_zona!:number;
+    declare ID_zona:number;
     @Column({
         type: DataType.STRING(145),
     })
-    zona!:string;
+    declare zona:string;
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
 
     @HasMany(() => Propiedades)
-    propiedades!: Propiedades[];
+    declare propiedades: Propiedades[];
 }
 
 export default Zona

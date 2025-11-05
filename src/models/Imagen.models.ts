@@ -12,27 +12,27 @@ class Imagen extends Model{
     @Column({
         type: DataType.INTEGER,
     })
-    ID_imagen:number;
+    declare ID_imagen:number;
     @Column({
         type: DataType.STRING(255),
     })
-    URL:string;
+    declare URL:string;
     
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
 
     @ForeignKey(() => Propiedades)
     @Column({
     type: DataType.INTEGER,
     })
-    ID_propiedad!: number;
+    declare ID_propiedad: number;
 
     @BelongsTo(() => Propiedades)
-    propiedad!: Propiedades;
+    declare propiedad: Propiedades;
 
     
 }

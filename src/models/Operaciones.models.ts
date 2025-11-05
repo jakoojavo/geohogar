@@ -12,36 +12,36 @@ class Operacion extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  ID_operacion!: number;
+  declare ID_operacion: number;
 
   @Column({
     type: DataType.STRING(45),
   })
-  tipo!: string;
+  declare tipo: string;
   @Column({
     type: DataType.DATEONLY
   })
-  fechainicio!: Date;
+  declare fechainicio: Date;
 
   @Column({
     type: DataType.DATEONLY
   })
-  fechafin!: Date;
+  declare fechafin: Date;
   @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: true
     })
-    estado!:boolean;
+    declare estado:boolean;
 
 
   @ForeignKey(() => Propiedades)
   @Column({
     type: DataType.INTEGER,
   })
-  ID_propiedades!: number;
+  declare ID_propiedades: number;
 
   @BelongsTo(() => Propiedades)
-  propiedad!: Propiedades;
+  declare propiedad: Propiedades;
 }
 export default Operacion;
