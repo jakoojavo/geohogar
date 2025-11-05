@@ -5,7 +5,7 @@ import Tipoinmueble from '../models/Tipoinmueble.models';
 import Zona from '../models/Zona.models';
 import Estadopropiedad from '../models/Estadopropiedad.models';
 import Ambientes from '../models/Ambientes.models';
-import Imagen from "../models/Imagen.models";
+import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
 
@@ -74,8 +74,8 @@ console.log('🔍 BACKEND - Después de destructuring:');
     ID_propiedad: propiedad.getDataValue('ID_propiedades')
   }));
 
-  try {
-    await Imagen.bulkCreate(imagenes);
+    try {
+    await Imagenes.bulkCreate(imagenes);
   } catch (imgError) {
     console.error('Error al guardar imágenes:', imgError);
   }
@@ -115,14 +115,8 @@ console.log('🔍 BACKEND - Después de destructuring:');
 //   };
 
 //AGREGAADO
-import Imagenes from "../models/Imagen.models";
-import Mascota from "../models/Mascota.models";
 
-<<<<<<< HEAD
 // ========HANDLER GET - Listado de propiedades (CORREGIDO)=====================
-=======
-
->>>>>>> ef65ff2e896a37b0166b49848ab491cb6cb28889
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
   try {
     const consulta = await Propiedades.findAll({
