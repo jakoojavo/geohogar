@@ -46,10 +46,7 @@ const subirPropiedades = async (req: Request, res: Response) => {
         ID_estadopropiedad: parseOrNull(ID_estadopropiedad),
         ID_ambiente: parseOrNull(ID_ambiente),
         ID_Mascota: parseOrNull(ID_Mascota),
-        garage: garage === 'true' || garage === true,
-        balcon: balcon === 'true' || balcon === true,
-        patio: patio === 'true' || patio === true,
-        acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true
+        
 });
       console.log('Archivos recibidos:', req.files);
       console.log('🖼️ Cantidad de imágenes recibidas:', Array.isArray(req.files) ? req.files.length : 'No es array');
