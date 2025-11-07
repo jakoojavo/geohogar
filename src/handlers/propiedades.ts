@@ -13,25 +13,19 @@ import { Op } from "sequelize";
 //Agregado 
 const subirPropiedades = async (req: Request, res: Response) => {
   try {
-    console.log('🔍 BACKEND - Body recibido:', req.body);
-    console.log('🔍 BACKEND - acepta_mascota recibido:', req.body.acepta_mascota);
-    console.log('🔍 BACKEND - Tipo:', typeof req.body.acepta_mascota);
-    console.log('🔍 BACKEND - ID_Mascota recibido:', req.body.ID_Mascota);
+    console.log('Body recibido:', req.body);
     const {
-      direccion, precio, descripcion, geolocalizacion,latitud,longitud,
+      direccion, precio, descripcion,latitud,longitud,
       estado, ID_zona, ID_agente, ID_tipoinmueble,
-      ID_estadopropiedad, ID_ambiente, ID_Mascota, garage, balcon, patio, acepta_mascota
-
+      ID_estadopropiedad, ID_ambiente,ID_Mascota, garage, balcon, patio, acepta_mascota
     } = req.body;
-console.log('🔍 BACKEND - Después de destructuring:');
-    console.log('  acepta_mascota:', acepta_mascota);
-    console.log('  garage:', garage);
-    console.log('  balcon:', balcon);
-    console.log('  patio:', patio);
-    console.log('  ID_Mascota:', ID_Mascota);
+
     const parseOrNull = (value: any) => {
-  return value === '' || value === undefined || value === null ? null : parseInt(value);
-};
+      if (value === '' || value === null || value === undefined || isNaN(parseInt(value))) {
+        return null;
+      }
+      return parseInt(value);
+    };
 
 
 
@@ -39,7 +33,6 @@ console.log('🔍 BACKEND - Después de destructuring:');
         direccion,
         precio,
         descripcion,
-        geolocalizacion,
         latitud,
         longitud,
         acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true,
@@ -52,9 +45,11 @@ console.log('🔍 BACKEND - Después de destructuring:');
         ID_tipoinmueble: parseOrNull(ID_tipoinmueble),
         ID_estadopropiedad: parseOrNull(ID_estadopropiedad),
         ID_ambiente: parseOrNull(ID_ambiente),
-        //Agregado para la llave foranea de mascota
-        ID_Mascota: acepta_mascota === 'true' || acepta_mascota === true ? parseOrNull(ID_Mascota) : null
-
+        ID_Mascota: parseOrNull(ID_Mascota),
+        garage: garage === 'true' || garage === true,
+        balcon: balcon === 'true' || balcon === true,
+        patio: patio === 'true' || patio === true,
+        acepta_mascota: acepta_mascota === 'true' || acepta_mascota === true
 });
       console.log('Archivos recibidos:', req.files);
       console.log('🖼️ Cantidad de imágenes recibidas:', Array.isArray(req.files) ? req.files.length : 'No es array');
@@ -116,7 +111,7 @@ console.log('🔍 BACKEND - Después de destructuring:');
 
 //AGREGAADO
 
-// ========HANDLER GET - Listado de propiedades (CORREGIDO)=====================
+
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
   try {
     const consulta = await Propiedades.findAll({
