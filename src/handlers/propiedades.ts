@@ -5,7 +5,7 @@ import Tipoinmueble from '../models/Tipoinmueble.models';
 import Zona from '../models/Zona.models';
 import Estadopropiedad from '../models/Estadopropiedad.models';
 import Ambientes from '../models/Ambientes.models';
-import Imagen from "../models/Imagen.models";
+import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
 
@@ -69,8 +69,8 @@ const subirPropiedades = async (req: Request, res: Response) => {
     ID_propiedad: propiedad.getDataValue('ID_propiedades')
   }));
 
-  try {
-    await Imagen.bulkCreate(imagenes);
+    try {
+    await Imagenes.bulkCreate(imagenes);
   } catch (imgError) {
     console.error('Error al guardar imágenes:', imgError);
   }
@@ -110,8 +110,6 @@ const subirPropiedades = async (req: Request, res: Response) => {
 //   };
 
 //AGREGAADO
-import Imagenes from "../models/Imagen.models";
-import Mascota from "../models/Mascota.models";
 
 
 const obtenerListaPropiedades = async (req: Request, res: Response) => {
@@ -266,7 +264,15 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
         {
           model: Ambientes,
           attributes: ['ambientes'],
+        },{
+          model: Mascota,
+          attributes: ['Mascota'],
+        
         },
+        {
+          model: Imagenes,
+          attributes: ['ID_imagen', 'URL', 'estado'],
+        }
       ],
     });
 
@@ -280,15 +286,77 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error al obtener la propiedad por ID" });
   }
 };
-// ==========HANDLER PUT - Actualizar propiedad (CORREGIDO)==========================
+
+const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
+    try {
+        const {
+            precio_desde,
+            precio_hasta,
+            ID_zona,
+            ID_tipoinmueble,
+            ID_ambiente,
+            ID_estadopropiedad,
+            garage,
+            balcon,
+            patio,
+            acepta_mascota,
+        } = req.query;
+
+        const where: any = {};
+
+        if (precio_desde && precio_hasta) {
+            where.precio = { [Op.between]: [precio_desde, precio_hasta] };
+        }
+        if (ID_zona) {
+            where.ID_zona = ID_zona;
+        }
+        if (ID_tipoinmueble) {
+            where.ID_tipoinmueble = ID_tipoinmueble;
+        }
+        if (ID_ambiente) {
+            where.ID_ambiente = ID_ambiente;
+        }
+        if (ID_estadopropiedad) {
+            where.ID_estadopropiedad = ID_estadopropiedad;
+        }
+        if (garage) {
+            where.garage = garage === 'true';
+        }
+        if (balcon) {
+            where.balcon = balcon === 'true';
+        }
+        if (patio) {
+            where.patio = patio === 'true';
+        }
+        if (acepta_mascota) {
+            where.acepta_mascota = acepta_mascota === 'true';
+        }
+
+        const propiedades = await Propiedades.findAll({
+            where,
+            include: [
+                { model: Agenteinmobiliario, attributes: ['nombre', 'matricula'] },
+                { model: Zona, attributes: ['zona'] },
+                { model: Tipoinmueble, attributes: ['inmueble'] },
+                { model: Estadopropiedad, attributes: ['estado_propiedad'] },
+                { model: Ambientes, attributes: ['ambientes'] },
+                { model: Imagenes, attributes: ['ID_imagen', 'URL', 'estado'] }
+            ],
+        });
+
+        res.json({ data: propiedades });
+    } catch (error) {
+        console.error("Error al buscar propiedades por filtro:", error);
+        res.status(500).json({ message: "Error al buscar propiedades por filtro" });
+    }
+};
+
 const actualizarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
   const {
-    titulo,
     direccion,
     precio,
     descripcion,
-    geolocalizacion,
     latitud,
     longitud,
     estado,
@@ -436,117 +504,56 @@ const ocultarPropiedad = async (req: Request, res: Response) => {
 
 
 
-const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
-    try {
-        const {
-            precio_desde,
-            precio_hasta,
-            ID_zona,
-            ID_tipoinmueble,
-            ID_ambiente,
-            ID_estadopropiedad,
-            garage,
-            balcon,
-            patio,
-            acepta_mascota,
-        } = req.query;
+// const actualizarPropiedad = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const {
+//     direccion,
+//     precio,
+//     descripcion,
+//     geolocalizacion,
+//     latitud,
+//     longitud,
+//     estado,
+//     ID_zona,
+//     ID_agente,
+//     ID_tipoinmueble,
+//     ID_estadopropiedad,
+//     ID_ambiente
+//   } = req.body;
 
-        const where: any = {};
+//   try {
+//     const propiedad = await Propiedades.findByPk(id);
 
-        if (precio_desde && precio_hasta) {
-            where.precio = { [Op.between]: [precio_desde, precio_hasta] };
-        }
-        if (ID_zona) {
-            where.ID_zona = ID_zona;
-        }
-        if (ID_tipoinmueble) {
-            where.ID_tipoinmueble = ID_tipoinmueble;
-        }
-        if (ID_ambiente) {
-            where.ID_ambiente = ID_ambiente;
-        }
-        if (ID_estadopropiedad) {
-            where.ID_estadopropiedad = ID_estadopropiedad;
-        }
-        if (garage) {
-            where.garage = garage === 'true';
-        }
-        if (balcon) {
-            where.balcon = balcon === 'true';
-        }
-        if (patio) {
-            where.patio = patio === 'true';
-        }
-        if (acepta_mascota) {
-            where.acepta_mascota = acepta_mascota === 'true';
-        }
+//     if (!propiedad) {
+//       return res.status(404).json({ message: "Propiedad no encontrada" });
+//     }
 
-        const propiedades = await Propiedades.findAll({
-            where,
-            include: [
-                { model: Agenteinmobiliario, attributes: ['nombre', 'matricula'] },
-                { model: Zona, attributes: ['zona'] },
-                { model: Tipoinmueble, attributes: ['inmueble'] },
-                { model: Estadopropiedad, attributes: ['estado_propiedad'] },
-                { model: Ambientes, attributes: ['ambientes'] },
-                { model: Imagenes, attributes: ['ID_imagen', 'URL', 'estado'] }
-            ],
-        });
+//     await propiedad.update({
+//       direccion,
+//       precio,
+//       descripcion,
+//       geolocalizacion,
+//       latitud,
+//       longitud,
+//       estado,
+//       ID_zona,
+//       ID_agente,
+//       ID_tipoinmueble,
+//       ID_estadopropiedad,
+//       ID_ambiente
+//     });
 
-        res.json({ data: propiedades });
-    } catch (error) {
-        console.error("Error al buscar propiedades por filtro:", error);
-        res.status(500).json({ message: "Error al buscar propiedades por filtro" });
-    }
-};
+//     res.json({ data: propiedad });
 
-const actualizarPropiedad = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const {
-    direccion,
-    precio,
-    descripcion,
-    latitud,
-    longitud,
-    estado,
-    ID_zona,
-    ID_agente,
-    ID_tipoinmueble,
-    ID_estadopropiedad,
-    ID_ambiente
-  } = req.body;
-
-  try {
-    const propiedad = await Propiedades.findByPk(id);
-
-    if (!propiedad) {
-      return res.status(404).json({ message: "Propiedad no encontrada" });
-    }
-
-    await propiedad.update({
-      direccion,
-      precio,
-      descripcion,
-      latitud,
-      longitud,
-      estado,
-      ID_zona,
-      ID_agente,
-      ID_tipoinmueble,
-      ID_estadopropiedad,
-      ID_ambiente
-    });
-
-    res.json({ data: propiedad });
-
-  } catch (error) {
-    console.error("Error al actualizar propiedad:", error);
-    res.status(500).json({ message: "Error al actualizar propiedad" });
-  }
-};
+//   } catch (error) {
+//     console.error("Error al actualizar propiedad:", error);
+//     res.status(500).json({ message: "Error al actualizar propiedad" });
+//   }
+// };
 
 export { subirPropiedades,
      obtenerPropiedadesPorId,
      obtenerListaPropiedades,
      actualizarPropiedad,
+     ocultarPropiedad,
      buscarPropiedadesPorFiltro};

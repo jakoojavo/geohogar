@@ -2,8 +2,17 @@ import express from "express";
 import cors from "cors";
 import db from "./config/db";
 import cookieParser from "cookie-parser";
+import mime from 'mime-types';
+
+
 const server = express();
-server.use('/uploads', express.static('uploads'));
+// ✅ Configuración para servir imágenes con tipo MIME correcto
+server.use('/uploads', express.static('uploads', {
+  setHeaders: (res, filePath) => {
+    res.setHeader('Content-Type', mime.lookup(filePath) || 'application/octet-stream');
+  }
+}));
+
 
 // Rutas
 import routerAgente from "./router/agenteInmobiliario.router";
