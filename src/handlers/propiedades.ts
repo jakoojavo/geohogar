@@ -287,6 +287,7 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
 const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
     try {
         const {
+          estado,
             precio_desde,
             precio_hasta,
             ID_zona,
@@ -300,6 +301,9 @@ const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
         } = req.query;
 
         const where: any = {};
+        if (estado) {
+            where.estado = estado === 'true';
+        }
 
         if (precio_desde && precio_hasta) {
             where.precio = { [Op.between]: [precio_desde, precio_hasta] };
