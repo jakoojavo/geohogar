@@ -300,7 +300,7 @@ const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
         } = req.query;
 
         const where: any = {};
-
+        where.estado = true;  //agregadao para que filtre solo por las activas
         if (precio_desde && precio_hasta) {
             where.precio = { [Op.between]: [precio_desde, precio_hasta] };
         }
