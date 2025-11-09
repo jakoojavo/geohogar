@@ -346,7 +346,7 @@ const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
         console.error("Error al buscar propiedades por filtro:", error);
         res.status(500).json({ message: "Error al buscar propiedades por filtro" });
     }
-};
+}; 
 
 const actualizarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
