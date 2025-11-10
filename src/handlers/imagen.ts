@@ -3,7 +3,14 @@ import Imagen from "../models/Imagen.models";
 
 const subirImagen  = async ( req:Request, res: Response ) =>{
     try{
-        const imagen=await Imagen.create(req.body)
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se ha subido ningún archivo.' });
+        }
+
+        const { path: URL, filename: public_id } = req.file;
+        const { ID_propiedad } = req.body;
+
+        const imagen = await Imagen.create({ URL, public_id, ID_propiedad });
         res.json({data:imagen})
     } catch(error){
         console.error('Error al crear consulta:', error);
@@ -37,7 +44,7 @@ const obtenerListaImagen = async (req: Request, res: Response) => {
 
 const actualizarImagen = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { URL, estado, ID_propiedad } = req.body;
+  const { URL, estado, ID_propiedad, public_id } = req.body;
 
   try {
     const imagen = await Imagen.findByPk(id);
@@ -46,7 +53,7 @@ const actualizarImagen = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Imagen no encontrada" });
     }
 
-    await imagen.update({ URL, estado, ID_propiedad });
+    await imagen.update({ URL, estado, ID_propiedad, public_id });
 
     res.json({ data: imagen });
 
