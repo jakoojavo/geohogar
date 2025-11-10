@@ -4,6 +4,8 @@ import { Readable } from 'stream';
 
 class CloudinaryStorage implements multer.StorageEngine {
   _handleFile(req: Express.Request, file: Express.Multer.File, cb: (error?: any, info?: Partial<Express.Multer.File>) => void): void {
+    console.log('File buffer size:', file.buffer ? file.buffer.length : 'undefined'); // Add this line for debugging
+
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder: 'geohogar' }, // Optional: specify a folder in your Cloudinary account
       (error, result) => {

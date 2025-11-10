@@ -7,7 +7,9 @@ const subirImagen  = async ( req:Request, res: Response ) =>{
             return res.status(400).json({ error: 'No se ha subido ningún archivo.' });
         }
 
-        const { path: URL, filename: public_id } = req.file;
+        const uploadedFile = req.file as Express.Multer.File;
+        const URL = uploadedFile.path;
+        const public_id = uploadedFile.filename;
         const { ID_propiedad } = req.body;
 
         const imagen = await Imagen.create({ URL, public_id, ID_propiedad });
