@@ -8,6 +8,9 @@ import Ambientes from '../models/Ambientes.models';
 import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
+import cloudinary from '../config/cloudinary';
+import fs from 'fs';
+import path from 'path';
 
 
 //Agregado 
@@ -60,18 +63,26 @@ const subirPropiedades = async (req: Request, res: Response) => {
 
     //Guardar imágenes si existen
     if (req.files && Array.isArray(req.files)) {
-  const imagenes = req.files.map(file => ({
-    URL: `/uploads/${file.filename}`,
-    estado: true,
-    ID_propiedad: propiedad.getDataValue('ID_propiedades')
-  }));
+      const uploadPromises = req.files.map(file => {
+        return cloudinary.uploader.upload(file.path);
+      });
 
-    try {
-    await Imagenes.bulkCreate(imagenes);
-  } catch (imgError) {
-    console.error('Error al guardar imágenes:', imgError);
-  }
-}
+      const uploadResults = await Promise.all(uploadPromises);
+
+      const imagenes = uploadResults.map(result => ({
+        URL: result.secure_url,
+        estado: true,
+        ID_propiedad: propiedad.getDataValue('ID_propiedades')
+      }));
+
+      try {
+        await Imagenes.bulkCreate(imagenes);
+        // Eliminar archivos temporales
+        req.files.forEach(file => fs.unlinkSync(file.path));
+      } catch (imgError) {
+        console.error('Error al guardar imágenes:', imgError);
+      }
+    }
 
 
     res.status(201).json({ mensaje: "Propiedad creada con éxito", data: propiedad });

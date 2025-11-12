@@ -2,19 +2,11 @@ import express from "express";
 import cors from "cors";
 import db from "./config/db";
 import cookieParser from "cookie-parser";
-import mime from 'mime-types';
+import mime from "mime-types";
+import path from "path";
+import { corsMiddleware } from "./middlewares/corMiddleware";
 
-
-const server = express();
-// ✅ Configuración para servir imágenes con tipo MIME correcto
-server.use('/uploads', express.static('uploads', {
-  setHeaders: (res, filePath) => {
-    res.setHeader('Content-Type', mime.lookup(filePath) || 'application/octet-stream');
-  }
-}));
-
-
-// Rutas
+// Routers
 import routerAgente from "./router/agenteInmobiliario.router";
 import routerEstadoconsulta from "./router/estadoconsulta.router";
 import routerConsulta from "./router/consulta.router";
@@ -27,42 +19,22 @@ import routerEstadopropiedad from "./router/estadopropiead.router";
 import routerAmbientes from "./router/ambientes.router";
 import routerAuth from "./router/auth.router";
 import routerMascota from "./router/mascota.router";
-import { corsMiddleware } from "./middlewares/corMiddleware";
 
+const server = express();
 
+// ✅ Middleware
 server.use(cookieParser());
 server.use(express.json());
-// para la conexion con el fronted
 server.use(corsMiddleware);
 
-
-// Conexión a la base de datos
-async function connectDB() {
-  try {
-    await db.authenticate();
-    await db.sync(); // No usar { force: true } en producción
-    console.log("✅ Conexión a la base de datos exitosa");
-  } catch (error) {
-    console.error("❌ Error al conectar con la base de datos:", error);
+// ✅ Servir imágenes con MIME correcto
+server.use('/uploads', express.static('uploads', {
+  setHeaders: (res, filePath) => {
+    res.setHeader('Content-Type', mime.lookup(filePath) || 'application/octet-stream');
   }
-}
-connectDB();
+}));
 
-
-// async function connectDB() {
-//    try {
-//        await db.authenticate(); // Verificar conexión con la base de datos
-//        console.log("Conexión a la base de datos exitosa");
-
-//        await db.sync({ force: true }); // Sincronizar tablas (¡Cuidado con force en producción!)
-//        console.log("Tablas sincronizadas");
-//      } catch (error) {
-//        console.error("Error al conectar o sincronizar la base de datos:", error);
-//      }
-//    }
-//   connectDB()
-
-// Rutas
+// ✅ Rutas API
 server.use("/api", routerAgente);
 server.use("/api", routerEstadoconsulta);
 server.use("/api", routerConsulta);
@@ -74,12 +46,31 @@ server.use("/api", routerTipoinmueble);
 server.use("/api", routerZona);
 server.use("/api", routerAmbientes);
 server.use("/api", routerMascota);
-server.use("/api", routerAuth )
+server.use("/api", routerAuth);
 
-// Puerto
+// ✅ Servir frontend compilado
+server.use(express.static(path.join(__dirname, 'dist')));
+
+server.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// ✅ Conexión a la base de datos
+async function connectDB() {
+  try {
+    await db.authenticate();
+    await db.sync(); // No usar { force: true } en producción
+    console.log("✅ Conexión a la base de datos exitosa");
+  } catch (error) {
+    console.error("❌ Error al conectar con la base de datos:", error);
+  }
+}
+connectDB();
+
+// ✅ Puerto
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(` Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
 
 export default server;
