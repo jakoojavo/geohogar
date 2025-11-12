@@ -8,6 +8,9 @@ import Ambientes from '../models/Ambientes.models';
 import Imagenes from "../models/Imagen.models";
 import Mascota from "../models/Mascota.models";
 import { Op } from "sequelize";
+import cloudinary from '../config/cloudinary';
+import fs from 'fs';
+import path from 'path';
 
 
 //Agregado 
@@ -60,18 +63,26 @@ const subirPropiedades = async (req: Request, res: Response) => {
 
     //Guardar imágenes si existen
     if (req.files && Array.isArray(req.files)) {
-  const imagenes = req.files.map(file => ({
-    URL: `/uploads/${file.filename}`,
-    estado: true,
-    ID_propiedad: propiedad.getDataValue('ID_propiedades')
-  }));
+      const uploadPromises = req.files.map(file => {
+        return cloudinary.uploader.upload(file.path);
+      });
 
-    try {
-    await Imagenes.bulkCreate(imagenes);
-  } catch (imgError) {
-    console.error('Error al guardar imágenes:', imgError);
-  }
-}
+      const uploadResults = await Promise.all(uploadPromises);
+
+      const imagenes = uploadResults.map(result => ({
+        URL: result.secure_url,
+        estado: true,
+        ID_propiedad: propiedad.getDataValue('ID_propiedades')
+      }));
+
+      try {
+        await Imagenes.bulkCreate(imagenes);
+        // Eliminar archivos temporales
+        req.files.forEach(file => fs.unlinkSync(file.path));
+      } catch (imgError) {
+        console.error('Error al guardar imágenes:', imgError);
+      }
+    }
 
 
     res.status(201).json({ mensaje: "Propiedad creada con éxito", data: propiedad });
@@ -285,68 +296,98 @@ const obtenerPropiedadesPorId = async (req: Request, res: Response) => {
 };
 
 const buscarPropiedadesPorFiltro = async (req: Request, res: Response) => {
-    try {
-        const {
-            precio_desde,
-            precio_hasta,
-            ID_zona,
-            ID_tipoinmueble,
-            ID_ambiente,
-            ID_estadopropiedad,
-            garage,
-            balcon,
-            patio,
-            acepta_mascota,
-        } = req.query;
+  try {
+    const {
+      estado,
+      precio_desde,
+      precio_hasta,
+      ID_zona,
+      ID_tipoinmueble,
+      ID_ambiente,
+      ID_estadopropiedad,
+      garage,
+      balcon,
+      patio,
+      acepta_mascota,
+    } = req.query;
 
-        const where: any = {};
-        where.estado = true;  //agregadao para que filtre solo por las activas
-        if (precio_desde && precio_hasta) {
-            where.precio = { [Op.between]: [precio_desde, precio_hasta] };
-        }
-        if (ID_zona) {
-            where.ID_zona = ID_zona;
-        }
-        if (ID_tipoinmueble) {
-            where.ID_tipoinmueble = ID_tipoinmueble;
-        }
-        if (ID_ambiente) {
-            where.ID_ambiente = ID_ambiente;
-        }
-        if (ID_estadopropiedad) {
-            where.ID_estadopropiedad = ID_estadopropiedad;
-        }
-        if (garage) {
-            where.garage = garage === 'true';
-        }
-        if (balcon) {
-            where.balcon = balcon === 'true';
-        }
-        if (patio) {
-            where.patio = patio === 'true';
-        }
-        if (acepta_mascota) {
-            where.acepta_mascota = acepta_mascota === 'true';
-        }
+    // helpers para parsear query params
+    const parseBool = (v: any) => v === 'true' || v === true;
+    const parseIntOrUndefined = (v: any) => {
+      if (v === undefined || v === null || v === '') return undefined;
+      const n = Number(v);
+      return Number.isNaN(n) ? undefined : n;
+    };
 
-        const propiedades = await Propiedades.findAll({
-            where,
-            include: [
-                { model: Agenteinmobiliario, attributes: ['nombre', 'matricula'] },
-                { model: Zona, attributes: ['zona'] },
-                { model: Tipoinmueble, attributes: ['inmueble'] },
-                { model: Estadopropiedad, attributes: ['estado_propiedad'] },
-                { model: Ambientes, attributes: ['ambientes'] },
-                { model: Imagenes, attributes: ['ID_imagen', 'URL', 'estado'] }
-            ],
-        });
-
-        res.json({ data: propiedades });
-    } catch (error) {
-        console.error("Error al buscar propiedades por filtro:", error);
-        res.status(500).json({ message: "Error al buscar propiedades por filtro" });
+    const where: any = {};
+    // estado puede venir como 'true'|'false' (string) o como boolean
+    if (estado !== undefined) {
+      where.estado = parseBool(estado);
     }
-}; 
+
+    // rangos numéricos -> convertir a number
+    const desdeNum = parseIntOrUndefined(precio_desde);
+    const hastaNum = parseIntOrUndefined(precio_hasta);
+    if (desdeNum !== undefined && hastaNum !== undefined) {
+      where.precio = { [Op.between]: [desdeNum, hastaNum] };
+    }
+
+    const zonaNum = parseIntOrUndefined(ID_zona);
+    if (zonaNum !== undefined) {
+      where.ID_zona = zonaNum;
+    }
+
+    const tipoNum = parseIntOrUndefined(ID_tipoinmueble);
+    if (tipoNum !== undefined) {
+      where.ID_tipoinmueble = tipoNum;
+    }
+
+    const ambNum = parseIntOrUndefined(ID_ambiente);
+    if (ambNum !== undefined) {
+      where.ID_ambiente = ambNum;
+    }
+
+    const estadopropNum = parseIntOrUndefined(ID_estadopropiedad);
+    if (estadopropNum !== undefined) {
+      where.ID_estadopropiedad = estadopropNum;
+    }
+
+    if (garage !== undefined) {
+      where.garage = parseBool(garage);
+    }
+    if (balcon !== undefined) {
+      where.balcon = parseBool(balcon);
+    }
+    if (patio !== undefined) {
+      where.patio = parseBool(patio);
+    }
+    if (acepta_mascota !== undefined) {
+      where.acepta_mascota = parseBool(acepta_mascota);
+    }
+
+    console.log('Where clause:', where);
+
+    // debug: mostrar el objeto where que se enviará a Sequelize
+    console.log('buscarPropiedadesPorFiltro - where:', JSON.stringify(where));
+
+    const propiedades = await Propiedades.findAll({
+      where,
+      include: [
+        { model: Agenteinmobiliario, attributes: ['nombre', 'matricula'] },
+        { model: Zona, attributes: ['zona'] },
+        { model: Tipoinmueble, attributes: ['inmueble'] },
+        { model: Estadopropiedad, attributes: ['estado_propiedad'] },
+        { model: Ambientes, attributes: ['ambientes'] },
+        { model: Imagenes, attributes: ['ID_imagen', 'URL', 'estado'] }
+      ],
+    });
+
+    res.json({ data: propiedades });
+  } catch (error) {
+    console.error("Error al buscar propiedades por filtro:", error);
+    res.status(500).json({ message: "Error al buscar propiedades por filtro" });
+  }
+};
 
 const actualizarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
