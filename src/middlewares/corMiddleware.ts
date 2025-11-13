@@ -2,7 +2,8 @@ import cors from 'cors';
 
 const allowedOrigins = [
   'http://localhost:5174',
-  'https://proyectogeo.onrender.com',
+  'https://proyectogeo-final.vercel.app'
+,
 ];
 
 const corsOptions = {
