@@ -51,7 +51,8 @@ server.use("/api", routerAuth);
 // ✅ Servir frontend compilado
 server.use(express.static(path.join(__dirname, 'dist')));
 
-server.get('*', (req, res) => {
+// Ajuste para path-to-regexp v6: usar wildcard con nombre
+server.get('/*path', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
