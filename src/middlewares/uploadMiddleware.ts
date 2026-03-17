@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { v2 as cloudinary } from '../config/cloudinary';
+import cloudinary from '../config/cloudinary';
 import { Readable } from 'stream';
 
 class CloudinaryStorage implements multer.StorageEngine {
